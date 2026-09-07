@@ -585,6 +585,11 @@ section{ scroll-margin-top: 90px; }
 
 /* ===================== EXPERIMENTS ===================== */
 .experiments{ padding: var(--space-6) 0; border-top: 1px solid var(--border-soft); }
+.experiments-list{
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
 .experiment-card{
   display: flex;
   align-items: center;
