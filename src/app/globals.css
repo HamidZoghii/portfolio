@@ -1,0 +1,115 @@
+@import "tailwindcss";
+
+@theme {
+  /* Surfaces */
+  --color-bg: #0d0e14;
+  --color-surface: #171820;
+  --color-surface-2: #202129;
+  --color-line: #2a2c36;
+  --color-line-soft: #1e202a;
+
+  /* Text */
+  --color-ink: #f1f1f3;
+  --color-ink-soft: #9a9ca8;
+  --color-ink-faint: #62636e;
+
+  /* Brand */
+  --color-accent: #e8a34d;
+  --color-accent-soft: #e8a34d1f;
+  --color-available: #6fcf97;
+
+  /* Fonts — loaded via <link> tags in the locale layout head */
+  --font-display: "Bricolage Grotesque", sans-serif;
+  --font-body: "Manrope", sans-serif;
+  --font-fa: "Vazirmatn", sans-serif;
+
+  --container-page: 1180px;
+}
+
+html {
+  background: var(--color-bg);
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+}
+
+[dir="rtl"] body {
+  font-family: var(--font-fa);
+}
+
+::selection {
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Scroll-reveal primitive, driven by a small client hook toggling data-reveal */
+[data-reveal="hidden"] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+[data-reveal="visible"] {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+[data-reveal-stagger="hidden"] > * {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+[data-reveal-stagger="visible"] > * {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+[data-reveal-stagger="visible"] > *:nth-child(1) { transition-delay: 0.02s; }
+[data-reveal-stagger="visible"] > *:nth-child(2) { transition-delay: 0.08s; }
+[data-reveal-stagger="visible"] > *:nth-child(3) { transition-delay: 0.14s; }
+[data-reveal-stagger="visible"] > *:nth-child(4) { transition-delay: 0.2s; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  [data-reveal="hidden"], [data-reveal-stagger="hidden"] > * {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  * { animation: none !important; }
+}
+
+@keyframes pulse-dot {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(111, 207, 151, 0.45); }
+  70% { box-shadow: 0 0 0 7px rgba(111, 207, 151, 0); }
+}
+
+@keyframes float-a {
+  0%, 100% { transform: translate(0, 0) rotate(-2deg); }
+  50% { transform: translate(6px, -10px) rotate(-1deg); }
+}
+@keyframes float-b {
+  0%, 100% { transform: translate(0, 0) rotate(2deg); }
+  50% { transform: translate(-8px, 8px) rotate(3deg); }
+}
+@keyframes float-c {
+  0%, 100% { transform: translate(0, 0) rotate(-1deg); }
+  50% { transform: translate(4px, 10px) rotate(0deg); }
+}
