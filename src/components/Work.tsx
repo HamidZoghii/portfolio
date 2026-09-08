@@ -2,6 +2,7 @@ import Image from "next/image";
 import type { Dictionary } from "@/dictionaries/en";
 import { Reveal } from "./Reveal";
 import { IconArrowUpRight } from "./icons";
+import { withBasePath } from "@/lib/base-path";
 
 export function Work({ dict }: { dict: Dictionary }) {
   return (
@@ -32,7 +33,7 @@ export function Work({ dict }: { dict: Dictionary }) {
                   </div>
                   <div className="relative h-[calc(100%-30px)] w-full overflow-hidden">
                     <Image
-                      src={project.image}
+                      src={withBasePath(project.image)}
                       alt={`${project.title} website homepage`}
                       fill
                       sizes="(min-width: 768px) 560px, 100vw"

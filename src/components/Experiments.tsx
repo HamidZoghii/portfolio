@@ -2,6 +2,7 @@ import Image from "next/image";
 import type { Dictionary } from "@/dictionaries/en";
 import { Reveal } from "./Reveal";
 import { IconArrowUpRight } from "./icons";
+import { withBasePath } from "@/lib/base-path";
 
 export function Experiments({ dict }: { dict: Dictionary }) {
   return (
@@ -20,7 +21,7 @@ export function Experiments({ dict }: { dict: Dictionary }) {
             >
               <div className="relative aspect-video w-full shrink-0 overflow-hidden rounded-[10px] border border-line-soft sm:aspect-[4/3] sm:w-[200px]">
                 <Image
-                  src={item.image}
+                  src={withBasePath(item.image)}
                   alt={`${item.title} homepage`}
                   fill
                   sizes="200px"

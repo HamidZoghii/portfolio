@@ -1,6 +1,7 @@
 import Image from "next/image";
 import type { Dictionary } from "@/dictionaries/en";
 import { Reveal } from "./Reveal";
+import { withBasePath } from "@/lib/base-path";
 
 export function About({ dict }: { dict: Dictionary }) {
   return (
@@ -9,7 +10,7 @@ export function About({ dict }: { dict: Dictionary }) {
         <div className="flex flex-col gap-4">
           <div className="relative aspect-square w-full max-w-[220px] overflow-hidden rounded-2xl border border-line">
             <Image
-              src="/images/hamid-photo.webp"
+              src={withBasePath("/images/hamid-photo.webp")}
               alt={dict.hero.name}
               fill
               sizes="220px"

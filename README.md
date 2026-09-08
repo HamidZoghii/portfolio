@@ -1,16 +1,17 @@
 # Hamid Zoghi — Portfolio
 
 Personal portfolio site for Hamid Zoghi (Front-End & Custom WordPress Developer).
-Bilingual (English / Persian), fully RTL/LTR aware, built with Next.js 16 and Tailwind CSS v4.
+Bilingual (English / Persian), fully RTL/LTR aware, built with Next.js 16 and Tailwind CSS v4,
+and exported as a fully static site (no server required to run it).
 
 ## Tech stack
 
-- **Next.js 16** (App Router, Turbopack, static export via `generateStaticParams`)
+- **Next.js 16** (App Router, static export via `output: "export"`)
 - **Tailwind CSS v4** (CSS-first `@theme` config — see `src/app/globals.css`)
 - **TypeScript**
 - No external i18n library — locale routing and dictionaries are handled manually (see below), which keeps the project dependency-light and easy to follow.
 
-> **Note on Next.js 16:** this is a very new major version. If you (or an AI assistant) run into unfamiliar APIs, check `node_modules/next/dist/docs/` first — some conventions changed from earlier versions (e.g. `middleware.ts` is now `proxy.ts`).
+> **Note on Next.js 16:** this is a very new major version. If you (or an AI assistant) run into unfamiliar APIs, check `node_modules/next/dist/docs/` first — some conventions changed from earlier versions.
 
 ## Getting started
 
@@ -22,9 +23,10 @@ npm run dev
 Open [http://localhost:3000](http://localhost:3000) — it will redirect to `/en` automatically.
 
 ```bash
-npm run build   # production build (statically generates /en and /fa)
-npm run start   # serve the production build
-npm run lint    # ESLint
+npm run build           # static export → out/ (root path, for Vercel or a custom domain)
+npm run build:gh-pages  # static export → out/ (prefixed with /portfolio, for GitHub Pages)
+npm run start            # preview the exported out/ folder locally
+npm run lint              # ESLint
 ```
 
 ## Project structure
@@ -41,11 +43,14 @@ src/
 │   ├── en.ts                # all English copy
 │   ├── fa.ts                # all Persian copy (typed against en.ts, so nothing can be missed)
 │   └── index.ts              # loader used by Server Components
-├── lib/
-│   └── i18n-config.ts       # supported locales + ltr/rtl mapping
-└── proxy.ts                  # redirects "/" → "/en" (Next 16's renamed middleware)
+└── lib/
+    ├── i18n-config.ts       # supported locales + ltr/rtl mapping
+    └── base-path.ts          # GitHub Pages sub-path helper (see Deployment)
 public/
-└── images/                   # optimized WebP screenshots + headshot
+├── images/                   # optimized WebP screenshots + headshot
+├── index.html                 # static "/" → "/en/" redirect (relative URL, works at any sub-path)
+└── .nojekyll                  # tells GitHub Pages not to run Jekyll over the _next/ folder
+.github/workflows/deploy.yml   # builds + deploys to GitHub Pages on every push to main
 ```
 
 ## Editing content
@@ -64,11 +69,23 @@ in `src/app/globals.css`.
 
 ## Deployment
 
-This is a standard Next.js app — the easiest path is [Vercel](https://vercel.com/new):
-push this project to a GitHub repo and import it on Vercel, no configuration needed.
+### GitHub Pages (automatic, already set up)
 
-It can also be self-hosted with `npm run build && npm run start` behind any Node host, since
-it does not use any Vercel-specific features.
+Push to the `main` branch and the workflow in `.github/workflows/deploy.yml` builds and
+publishes the site automatically. One-time setup: in the repo's **Settings → Pages**, set
+**Source** to **GitHub Actions** (not "Deploy from a branch"). After the first successful run,
+the site is live at `https://<username>.github.io/<repo-name>/`.
+
+The build sets `GITHUB_PAGES=true`, which makes `next.config.ts` prefix every route and asset
+with `/<repo-name>` (see `src/lib/base-path.ts`) so links resolve correctly at that sub-path.
+If the repo is ever renamed, update `basePath` in `src/lib/base-path.ts` to match.
+
+### Vercel (alternative)
+
+Since the app is a static export, it also deploys cleanly to
+[Vercel](https://vercel.com/new) or any static host: import the repo, leave settings on
+their defaults, deploy. Run the plain `npm run build` (no `GITHUB_PAGES` flag) for a root-path
+deployment — no code changes needed either way, both configurations live side by side.
 
 ## RTL / LTR
 
